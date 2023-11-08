@@ -64,7 +64,7 @@ def main_page():
     unsafe_allow_html=True
 )
     
-    st.sidebar.success("Home")
+    st.sidebar.success("")
 
     st.markdown(
         """
@@ -94,7 +94,7 @@ def page2():
     df, df1 = get_data()
     #df = data
     #def show() : 
-    st.sidebar.header("Facebook")
+    st.sidebar.header("")
 
     left_co, cent_co,last_co = st.columns(3)
     default_year = 2021
@@ -260,10 +260,9 @@ def page2():
                 #plt.figure(figsize=(15,10))
                 #plt.text(0.5, 1.15, f"Word Cloud Fraud Data Post", size=24, ha='center', transform=plt.gca().transAxes)
                 st.image(cloud.to_array(), width=0, use_column_width=True,caption = "WordCloud Data Fraud 2021-2023" )
-        
 def page3():
     st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
-    st.sidebar.header('DataTable')
+    st.sidebar.header('')
         # read csv from a github repo
     dataset_url = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/main/goups_post.csv"
     dataset_url2 = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/main/group.csv"
@@ -285,21 +284,25 @@ def page3():
     st.dataframe(df1.sample(15))
     # Option to download the DataFrame as a CSV file
     st.markdown(get_table_download_link_csv(df), unsafe_allow_html=True)
+                
+                
+def page4():
+    st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
+    st.sidebar.header('')
+def page5():
+    st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
+    st.sidebar.header('')
         
     time.sleep(1)
 page_names_to_funcs = {
     "Home": main_page,
     "Facebook": page2,
-    "DataTable" : page3,
+    "Google" : page3,
+    "Kibaru" : page4,
+    "DataTable" : page5,
 }
 st.sidebar.title("Navigation")
 selected_page = st.sidebar.radio("", page_names_to_funcs.keys())
 page_names_to_funcs[selected_page]()
-
-
-
-# In[ ]:
-
-
 
 

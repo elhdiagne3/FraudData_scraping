@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[1]:
 
 
 #!/usr/bin/env python
@@ -92,8 +92,8 @@ def page2():
     def get_data() -> pd.DataFrame:
         return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=',', encoding='utf-8', encoding_errors= 'ignore')
     df, df1 = get_data()
-    #df_s = df['year_mm'].value_counts().reset_index().sort_values('year_mm')
-    #df_s['nb_post'] = df_s['count']
+    dfs = df['post_id'].groupby(df['year_mm']).count().reset_index()
+    dfs['nb_post'] = dfs['post_id']
     df_ = df['likes'].groupby(df['year_mm']).sum().reset_index().sort_values('year_mm')
     df__ = df['comments'].groupby(df['year_mm']).sum().reset_index().sort_values('year_mm')
     #df = data
@@ -147,49 +147,49 @@ def page2():
             with col1:
                 with kpi1 : 
                     st.markdown(
-                        "<div style='text-align: center; font-size: 20px; font-family: Arial; font-weight: bold; color: black;'>"
+                        "<div style='text-align: center; font-size: 18px; font-family: Arial; font-weight: bold; color: black;'>"
                         "nb group 👪</div>",
                         unsafe_allow_html=True
                     )
 
                     st.markdown(
-                        "<div style='text-align: center; font-size: 40px; font-family: Arial; font-weight: bold; color: green;'>"
+                        "<div style='text-align: center; font-size: 35px; font-family: Arial; font-weight: bold; color: green;'>"
                         f"{format_number(nb_group)}</div>",
                         unsafe_allow_html=True
                     )
                 with kpi2 :
                     st.markdown(
-                        "<div style='text-align: center; font-size: 20px; font-family: Arial; font-weight: bold; color: black;'>"
+                        "<div style='text-align: center; font-size: 18px; font-family: Arial; font-weight: bold; color: black;'>"
                         "nb members 🙌</div>",
                         unsafe_allow_html=True
                     )
 
                     st.markdown(
-                        "<div style='text-align: center; font-size: 40px; font-family: Arial; font-weight: bold; color: green;'>"
+                        "<div style='text-align: center; font-size: 35px; font-family: Arial; font-weight: bold; color: green;'>"
                         f"{format_number(nb_member)}</div>",
                         unsafe_allow_html=True
                     )
             with col2:
                 with kpi3 :                
                     st.markdown(
-                        "<div style='text-align: center; font-size: 20px; font-family: Arial; font-weight: bold; color: black;'>"
+                        "<div style='text-align: center; font-size: 18px; font-family: Arial; font-weight: bold; color: black;'>"
                         "nb posts ⏳</div>",
                         unsafe_allow_html=True
                     )
 
                     st.markdown(
-                        "<div style='text-align: center; font-size: 40px; font-family: Arial; font-weight: bold; color: green;'>"
+                        "<div style='text-align: center; font-size: 35px; font-family: Arial; font-weight: bold; color: green;'>"
                         f"{format_number(nb_post)}</div>",
                         unsafe_allow_html=True
                     )
                 with kpi4:
                     st.markdown(
-                            "<div style='text-align: center; font-size: 20px; font-family: Arial; font-weight: bold; color: black;'>"
+                            "<div style='text-align: center; font-size: 18px; font-family: Arial; font-weight: bold; color: black;'>"
                             "nb likes 👍</div>",
                             unsafe_allow_html=True
                         )
                     st.markdown(
-                            "<div style='text-align: center; font-size: 40px; font-family: Arial; font-weight: bold; color: green;'>"
+                            "<div style='text-align: center; font-size: 35px; font-family: Arial; font-weight: bold; color: green;'>"
                             f"{format_number(nb_likes)}</div>",
                             unsafe_allow_html=True
                         )
@@ -197,33 +197,33 @@ def page2():
             with col3:
                 with kpi5 : 
                     st.markdown(
-                            "<div style='text-align: center; font-size: 20px; font-family: Arial; font-weight: bold; color: black;'>"
+                            "<div style='text-align: center; font-size: 18px; font-family: Arial; font-weight: bold; color: black;'>"
                             "nb comments ✍️</div>",
                             unsafe_allow_html=True
                         )
                     st.markdown(
-                            "<div style='text-align: center; font-size: 40px; font-family: Arial; font-weight: bold; color: green;'>"
+                            "<div style='text-align: center; font-size: 35px; font-family: Arial; font-weight: bold; color: green;'>"
                             f"{format_number(nb_comments)}</div>",
                             unsafe_allow_html=True
                         )
 
                 with kpi6 : 
                     st.markdown(
-                        "<div style='text-align: center; font-size: 20px; font-family: Arial; font-weight: bold; color: black;'>"
+                        "<div style='text-align: center; font-size: 18px; font-family: Arial; font-weight: bold; color: black;'>"
                         "nb shares 👋</div>",
                         unsafe_allow_html=True
                     )
                     st.markdown(
-                        "<div style='text-align: center; font-size: 40px; font-family: Arial; font-weight: bold; color: green;'>"
+                        "<div style='text-align: center; font-size: 35px; font-family: Arial; font-weight: bold; color: green;'>"
                         f"{format_number(nb_shares)}</div>",
                         unsafe_allow_html=True
                     )
 
             fig_col1, fig_col2 = st.columns(2)
-            '''with fig_col1:
-                fig = px.line(df_s, x = 'year_mm', y = 'nb_post',markers = True,  line_shape="spline", render_mode="svg", 
+            with fig_col1:
+                fig = px.line(dfs, x = 'year_mm', y = 'nb_post',markers = True,  line_shape="spline", render_mode="svg", 
                 width=600, height=400)
-                st.write(fig) '''
+                st.write(fig)
             with fig_col2:
                 fig = px.line(width=600, height=400)
                 fig.add_scatter(x=df_['year_mm'], y=df_['likes'], mode='lines', line_shape="spline", name='nb_likes')

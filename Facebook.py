@@ -92,10 +92,6 @@ def page2():
     def get_data() -> pd.DataFrame:
         return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=',', encoding='utf-8', encoding_errors= 'ignore')
     df, df1 = get_data()
-    dfs = df['post_id'].groupby(df['year_mm']).count().reset_index()
-    dfs['nb_post'] = dfs['post_id']
-    df_ = df['likes'].groupby(df['year_mm']).sum().reset_index().sort_values('year_mm')
-    df__ = df['comments'].groupby(df['year_mm']).sum().reset_index().sort_values('year_mm')
     #df = data
     #def show() : 
     st.sidebar.header("Facebook")
@@ -122,6 +118,10 @@ def page2():
         source_filter = st.multiselect("Select the year of posts", pd.unique(df["year"]), default=default_year)
         placeholder = st.empty()
         df = df[df["year"].isin(source_filter)]
+        dfs = df['post_id'].groupby(df['year_mm']).count().reset_index()
+        dfs['nb_post'] = dfs['post_id']
+        df_ = df['likes'].groupby(df['year_mm']).sum().reset_index().sort_values('year_mm')
+        df__ = df['comments'].groupby(df['year_mm']).sum().reset_index().sort_values('year_mm')
     # Fonction pour formater les grands nombres en K ou M
     def format_number(num):
         if num >= 1000000:  # Si le nombre est supérieur à 1 million
@@ -218,7 +218,6 @@ def page2():
                         f"{format_number(nb_shares)}</div>",
                         unsafe_allow_html=True
                     )
-
             fig_col1, fig_col2 = st.columns(2)
             with fig_col1:
                 fig = px.line(dfs, x = 'year_mm', y = 'nb_post',markers = True,  line_shape="spline", render_mode="svg", 

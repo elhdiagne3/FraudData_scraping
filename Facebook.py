@@ -280,8 +280,9 @@ def page3():
         return href
     st.title('DataTable with Download Option to CSV')
     # Display DataTable
+    df = df.drop('header', axis = 1)
     st.dataframe(df[df.post_type == 'fraud_post'].sample(15))
-    st.dataframe(df1.drop('header', axis = 1).sample(15))
+    st.dataframe(df1.sample(15))
     # Option to download the DataFrame as a CSV file
     st.markdown(get_table_download_link_csv(df), unsafe_allow_html=True)
         

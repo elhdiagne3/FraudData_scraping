@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[13]:
+# In[3]:
 
 
 #!/usr/bin/env python
@@ -220,11 +220,10 @@ def page2():
                     )
 
             fig_col1, fig_col2 = st.columns(2)
-'''            with fig_col1:
+            '''with fig_col1:
                 fig = px.line(df_s, x = 'year_mm', y = 'nb_post',markers = True,  line_shape="spline", render_mode="svg", 
                 width=600, height=400)
                 st.write(fig) '''
-
             with fig_col2:
                 fig = px.line(width=600, height=400)
                 fig.add_scatter(x=df_['year_mm'], y=df_['likes'], mode='lines', line_shape="spline", name='nb_likes')

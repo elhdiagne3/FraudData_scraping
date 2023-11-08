@@ -92,8 +92,8 @@ def page2():
     def get_data() -> pd.DataFrame:
         return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=',', encoding='utf-8', encoding_errors= 'ignore')
     df, df1 = get_data()
-    df_s = df['year_mm'].value_counts().reset_index().sort_values('year_mm')
-    df_s['nb_post'] = df_s['count']
+    #df_s = df['year_mm'].value_counts().reset_index().sort_values('year_mm')
+    #df_s['nb_post'] = df_s['count']
     df_ = df['likes'].groupby(df['year_mm']).sum().reset_index().sort_values('year_mm')
     df__ = df['comments'].groupby(df['year_mm']).sum().reset_index().sort_values('year_mm')
     #df = data
@@ -220,10 +220,10 @@ def page2():
                     )
 
             fig_col1, fig_col2 = st.columns(2)
-            with fig_col1:
+'''            with fig_col1:
                 fig = px.line(df_s, x = 'year_mm', y = 'nb_post',markers = True,  line_shape="spline", render_mode="svg", 
                 width=600, height=400)
-                st.write(fig) 
+                st.write(fig) '''
 
             with fig_col2:
                 fig = px.line(width=600, height=400)

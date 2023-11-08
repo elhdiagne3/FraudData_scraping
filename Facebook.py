@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[13]:
 
 
 #!/usr/bin/env python
@@ -92,6 +92,10 @@ def page2():
     def get_data() -> pd.DataFrame:
         return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=',', encoding='utf-8', encoding_errors= 'ignore')
     df, df1 = get_data()
+    df_s = df['year_mm'].value_counts().reset_index().sort_values('year_mm')
+    df_s['nb_post'] = df_s['count']
+    df_ = df['likes'].groupby(df['year_mm']).sum().reset_index().sort_values('year_mm')
+    df__ = df['comments'].groupby(df['year_mm']).sum().reset_index().sort_values('year_mm')
     #df = data
     #def show() : 
     st.sidebar.header("Facebook")
@@ -217,16 +221,12 @@ def page2():
 
             fig_col1, fig_col2 = st.columns(2)
             with fig_col1:
-                df_ = df['year_mm'].value_counts().reset_index().sort_values('year_mm')
-                df_['nb_post'] = df_['count']
-                fig = px.line(df_, x = 'year_mm', y = 'nb_post',markers = True,  line_shape="spline", render_mode="svg", 
+                fig = px.line(df_s, x = 'year_mm', y = 'nb_post',markers = True,  line_shape="spline", render_mode="svg", 
                 width=600, height=400)
                 st.write(fig) 
 
             with fig_col2:
                 fig = px.line(width=600, height=400)
-                df_ = df['likes'].groupby(df['year_mm']).sum().reset_index().sort_values('year_mm')
-                df__ = df['comments'].groupby(df['year_mm']).sum().reset_index().sort_values('year_mm')
                 fig.add_scatter(x=df_['year_mm'], y=df_['likes'], mode='lines', line_shape="spline", name='nb_likes')
                 fig.add_scatter(x=df__['year_mm'], y=df__['comments'], mode='lines', line_shape="spline", name='nb_Comments')
                 st.plotly_chart(fig)

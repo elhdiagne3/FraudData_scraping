@@ -255,7 +255,7 @@ def page2():
                 text_ =' '.join(text)
                 text_.encode('utf-16').decode('utf-16')
                 #Instantiate the wordcloud using color_func argument
-                cloud = WordCloud(font_path= 'font.ttf', width=1000, height=500,background_color='black',min_word_length = 6, colormap = 'Oranges').generate(text_)
+                cloud = WordCloud(font_path= 'font.ttf', width=1000, height=500,background_color='black',min_word_length = 6, colormap = 'Oranges').generate_from_text(text_)
                 #Plot the wordcloud
                 #plt.figure(figsize=(15,10))
                 #plt.text(0.5, 1.15, f"Word Cloud Fraud Data Post", size=24, ha='center', transform=plt.gca().transAxes)

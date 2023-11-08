@@ -248,7 +248,7 @@ def page2():
             st.write(fig)
                         
 
-            '''from wordcloud import ImageColorGenerator
+            from wordcloud import ImageColorGenerator
             from wordcloud import WordCloud
             with st.container() : 
                 df['text'].fillna(".", inplace =True)
@@ -260,7 +260,6 @@ def page2():
                 #plt.figure(figsize=(15,10))
                 #plt.text(0.5, 1.15, f"Word Cloud Fraud Data Post", size=24, ha='center', transform=plt.gca().transAxes)
                 st.image(cloud.to_array(), width=0, use_column_width=True,caption = "WordCloud Data Fraud 2021-2023" )
-'''
         
 def page3():
     st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)

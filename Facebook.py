@@ -1,22 +1,18 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[1]:
 
 
 #!/usr/bin/env python
 # coding: utf-8
-
 # In[2]:
-
-
 import time  # to simulate a real time data, time loop
 from PIL import Image
 import numpy as np  # np mean, np random
 import pandas as pd  # read csv, df manipulation
 import plotly.express as px  # interactive charts
 import streamlit as st  # 🎈 data web app development
-import plotly.express as px
 import matplotlib.pyplot as plt
 from typing import List, Tuple
 import base64
@@ -32,7 +28,7 @@ st.set_page_config(
 def main_page():
     
     col1, col2, col3 = st.columns(3)
-    image = Image.open("C:/Users/diagne080894/Pictures/Saved Pictures/téléchargement.png")
+    image = Image.open("téléchargement.png")
     with col1 : 
         st.markdown(
         """
@@ -254,7 +250,7 @@ def page2():
             st.write(fig)
                         
 
-            from wordcloud import ImageColorGenerator
+            '''from wordcloud import ImageColorGenerator
             from wordcloud import WordCloud
             with st.container() : 
                 df['text'].fillna(".", inplace =True)
@@ -266,6 +262,7 @@ def page2():
                 #plt.figure(figsize=(15,10))
                 #plt.text(0.5, 1.15, f"Word Cloud Fraud Data Post", size=24, ha='center', transform=plt.gca().transAxes)
                 st.image(cloud.to_array(), width=0, use_column_width=True,caption = "WordCloud Data Fraud 2021-2023" )
+'''
         
 def page3():
     st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
@@ -297,10 +294,8 @@ page_names_to_funcs = {
     "Facebook": page2,
     "DataTable" : page3,
 }
-
 st.sidebar.title("Navigation")
 selected_page = st.sidebar.radio("", page_names_to_funcs.keys())
 page_names_to_funcs[selected_page]()
-
 
 

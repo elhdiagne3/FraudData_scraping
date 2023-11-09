@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[10]:
 
 
 #!/usr/bin/env python
@@ -222,31 +222,33 @@ def page2():
             with fig_col1:
                 fig = px.line(dfs, x = 'year_mm', y = 'nb_post',markers = True,  line_shape="spline", render_mode="svg", 
                 width=600, height=400)
+                fig.update_layout(title_text='📈 : Evolution du nombre de posts par mois', title_x=0.4)
                 st.write(fig)
             with fig_col2:
-                fig = px.line(width=600, height=400)
-                fig.add_scatter(x=df_['year_mm'], y=df_['likes'], mode='lines', line_shape="spline", name='nb_likes')
-                fig.add_scatter(x=df__['year_mm'], y=df__['comments'], mode='lines', line_shape="spline", name='nb_Comments')
-                st.plotly_chart(fig)
-
+                fig = px.line(width=600, height=400,markers = True, render_mode="svg")
+                fig.update_layout(title_text='📈 : Evolution du nombre de likes & de comments par mois', title_x=0.1)
+                fig.add_scatter(x=df_['year_mm'], y=df_['likes'], mode='lines', line_shape="spline",marker= dict(color = 'blue'), name='nb_likes')
+                fig.add_scatter(x=df__['year_mm'], y=df__['comments'], mode='lines', line_shape="spline", marker= dict(color = 'green'), name='nb_Comments')
+                st.plotly_chart(fig) 
             with st.container() :
                 df1.sort_values('members',ascending=False, inplace=True)
                 df1_ = df1[~df1.name.str.contains('MTN')].head(15)
                 df1_.sort_values('members', ascending = False, inplace = True)
                 fig = px.bar(df1_, x = 'name', y = 'members', 
-                width=1400, height=800, title = 'Nb_members : Top 10 group')
+                width=1400, height=800)
                 fig.update_layout(
                 xaxis_title='Name groups',
                 yaxis_title='Number of members',
-                plot_bgcolor='rgba(0,0,0,0)',  # Transparent plot background
+                plot_bgcolor='white',  # Transparent plot background
                 paper_bgcolor='rgb(255,255,255)',  # White background
                 font=dict(family='Arial', size=12, color='black'),  # Font style
                 margin=dict(l=50, r=50, t=50, b=50),  # Setting margins
                 xaxis=dict(tickangle=45),  # Rotating x-axis labels
-                yaxis=dict(tickformat=',d')  # Adding comma to y-axis labels for thousands separator
+                yaxis=dict(tickformat=',d'),  # Adding comma to y-axis labels for thousands separator, 
+                title = '📊 Graph III : Nb_members : Top 10 group',
+                title_x = 0.4
             )
             st.write(fig)         
-
             from wordcloud import ImageColorGenerator
             from wordcloud import WordCloud
             with st.container() : 
@@ -255,11 +257,12 @@ def page2():
                 text_ =' '.join(text)
                 text_.encode('utf-16').decode('utf-16')
                 #Instantiate the wordcloud using color_func argument
-                cloud = WordCloud(font_path= 'font.ttf', width=1000, height=500,background_color='black',min_word_length = 6, colormap = 'Oranges').generate_from_text(text_)
+                cloud = WordCloud(font_path= 'font.ttf', width=1000, height=500,background_color='black',min_word_length = 6, colormap = 'Oranges').generate(text_)
                 #Plot the wordcloud
                 #plt.figure(figsize=(15,10))
-                #plt.text(0.5, 1.15, f"Word Cloud Fraud Data Post", size=24, ha='center', transform=plt.gca().transAxes)
-                st.image(cloud.to_array(), width=0, use_column_width=True,caption = "WordCloud Data Fraud 2021-2023" )
+                #plt.text(0.5, 1.15, f"Word Cloud Fraud Data Post", size=24, ha='center', transform=plt.gca().transAxes
+                st.markdown("""<p text-align: center; style='color: Black and Neon Blue; font-size:15px;font-family: Arial; font-weight: bold'>📚 WordCloud Data Fraud 2021-2023. </p>""", unsafe_allow_html = True) 
+                st.image(cloud.to_array(), width=0, use_column_width=True,caption = "" )
 def page3():
     st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
     st.sidebar.header('')

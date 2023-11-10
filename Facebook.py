@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[10]:
+# In[11]:
 
 
 #!/usr/bin/env python
@@ -261,9 +261,38 @@ def page2():
                 #Plot the wordcloud
                 #plt.figure(figsize=(15,10))
                 #plt.text(0.5, 1.15, f"Word Cloud Fraud Data Post", size=24, ha='center', transform=plt.gca().transAxes
-                st.markdown("""<p text-align: center; style='color: Black and Neon Blue; font-size:15px;font-family: Arial; font-weight: bold'>📚 WordCloud Data Fraud 2021-2023. </p>""", unsafe_allow_html = True) 
+                st.markdown("""<p text-align: centerstyle='color: Black and Neon Blue; font-size:15px;font-family: Arial; font-weight: bold'>📚 WordCloud Data Fraud 2021-2023. </p>""", unsafe_allow_html = True) 
                 st.image(cloud.to_array(), width=0, use_column_width=True,caption = "" )
 def page3():
+    st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
+    st.sidebar.header('')
+    dataset_url = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/master/goog_process.csv"
+    # read csv from a URL
+    @st.cache_data(ttl=60, persist="disk", show_spinner=False)
+    def get_data() -> pd.DataFrame:
+        return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore')
+    data= get_data()
+    fig = px.bar(data, x = 'word', y = 'count', 
+    width=1400, height=800 )
+    fig.update_layout(
+    xaxis_title='words',
+    yaxis_title='Frequency of word',
+    plot_bgcolor='white',  # Transparent plot background
+    paper_bgcolor='rgb(250,250,250)',  # White background
+    font=dict(family='Arial', size=12, color='black'),  # Font style
+    margin=dict(l=50, r=50, t=50, b=50),  # Setting margins
+    xaxis=dict(tickangle=45),  # Rotating x-axis labels
+    yaxis=dict(tickformat=',d'),  # Adding comma to y-axis labels for thousands separator, 
+    title = '📊 TOP 15 of words',
+    title_x = 0.4
+    )
+    st.write(fig)        
+                
+                
+def page4():
+    st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
+    st.sidebar.header('')
+def page5():
     st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
     st.sidebar.header('')
         # read csv from a github repo
@@ -287,14 +316,6 @@ def page3():
     st.dataframe(df1.sample(15))
     # Option to download the DataFrame as a CSV file
     st.markdown(get_table_download_link_csv(df), unsafe_allow_html=True)
-                
-                
-def page4():
-    st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
-    st.sidebar.header('')
-def page5():
-    st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
-    st.sidebar.header('')
         
     time.sleep(1)
 page_names_to_funcs = {

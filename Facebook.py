@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[11]:
+# In[6]:
 
 
 #!/usr/bin/env python
@@ -267,14 +267,15 @@ def page3():
     st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
     st.sidebar.header('')
     dataset_url = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/master/goog_process.csv"
+    dataset_url2 = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/master/google_all.csv"
     # read csv from a URL
     @st.cache_data(ttl=60, persist="disk", show_spinner=False)
     def get_data() -> pd.DataFrame:
-        return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore')
-    data= get_data()
-    data = data[data.word != '...']
+        return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=',', encoding='utf-8', encoding_errors= 'ignore')
+    data, df = get_data()
+    data = data[data.word != '...'].head(15)
     fig = px.bar(data, x = 'word', y = 'count', 
-    width=1300, height=800 )
+    width=1200, height=600 )
     fig.update_layout(
     xaxis_title='words',
     yaxis_title='Frequency of word',
@@ -286,8 +287,16 @@ def page3():
     yaxis=dict(tickformat=',d'),  # Adding comma to y-axis labels for thousands separator, 
     title = '📊 TOP 15 of words',
     title_x = 0.4
-    )
-    st.write(fig)        
+    ) 
+    def get_table_download_link_csv(df):
+        csv = df.to_csv(index=False, encoding = 'utf_8')
+        b64 = base64.b64encode(csv.encode()).decode()  # Encoding the CSV file
+        href = f'<a href="data:file/csv;base64,{b64}" download="data.csv">Download Table (CSV) File</a>'
+        return href
+    # Option to download the DataFrame as a CSV file
+    st.markdown(f"""<p style='text-align: center; color: Black and Neon Blue; font-size:30px;font-family: Arial; font-weight: bold'>View all table </p>""", unsafe_allow_html=True)
+    get_table_download_link_csv(df)
+    st.write(fig)
                 
                 
 def page4():
@@ -315,8 +324,8 @@ def page5():
     df = df.drop('header', axis = 1)
     st.dataframe(df[df.post_type == 'fraud_post'].sample(15))
     st.dataframe(df1.sample(15))
-    # Option to download the DataFrame as a CSV file
-    st.markdown(get_table_download_link_csv(df), unsafe_allow_html=True)
+    # Option to download the DataFrame as a CSV file 
+    st.markdown(f"""<p style='text-align: center; color: Black and Neon Blue; font-size:15px;font-family: Arial; font-weight: bold >{get_table_download_link_csv(df)}""", unsafe_allow_html=True)
         
     time.sleep(1)
 page_names_to_funcs = {
@@ -332,5 +341,11 @@ selected_page = st.sidebar.radio("", list(page_names_to_funcs.keys()))
 
 # Call the selected page function
 page_names_to_funcs[selected_page]()
+
+
+
+# In[ ]:
+
+
 
 

@@ -272,8 +272,9 @@ def page3():
     def get_data() -> pd.DataFrame:
         return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore')
     data= get_data()
+    data = data[data.word != '...']
     fig = px.bar(data, x = 'word', y = 'count', 
-    width=1400, height=800 )
+    width=1300, height=800 )
     fig.update_layout(
     xaxis_title='words',
     yaxis_title='Frequency of word',
@@ -320,13 +321,16 @@ def page5():
     time.sleep(1)
 page_names_to_funcs = {
     "Home": main_page,
-    "Facebook": page2,
     "Google" : page3,
+    "Facebook": page2,
     "Kibaru" : page4,
     "DataTable" : page5,
 }
-st.sidebar.title("Navigation")
-selected_page = st.sidebar.radio("", page_names_to_funcs.keys())
+st.sidebar.title("🌟 Navigation")
+
+selected_page = st.sidebar.radio("", list(page_names_to_funcs.keys()))
+
+# Call the selected page function
 page_names_to_funcs[selected_page]()
 
 

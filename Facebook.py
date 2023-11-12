@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[10]:
+# In[9]:
 
 
 #!/usr/bin/env python
@@ -85,13 +85,15 @@ def page2():
     st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
 
     # read csv from a github repo
-    dataset_url = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/main/goups_post.csv"
-    dataset_url2 = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/main/group.csv"
+    dataset_url = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/master/goups_post.csv"
+    dataset_url2 = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/master/group.csv"
     # read csv from a URL
     @st.cache_data(ttl=60, persist="disk", show_spinner=False)
     def get_data() -> pd.DataFrame:
         return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=',', encoding='utf-8', encoding_errors= 'ignore')
     df, df1 = get_data()
+    df = pd.read_csv(dataset_url, sep=';', encoding='utf-8', encoding_errors= 'ignore')
+    df1 = pd.read_csv(dataset_url2, sep=';', encoding='utf-8', encoding_errors= 'ignore')
     #df = data
     #def show() : 
     st.sidebar.header("")
@@ -312,6 +314,7 @@ def page3():
     # Option to download the DataFrame as a CSV file
     st.markdown(f"""<p style='text-align: center; color: Black and Neon Blue; font-size:30px;font-family: Arial; font-weight: bold'>{get_table_download_link_csv(df)}''</p>""", unsafe_allow_html=True)
     get_table_download_link_csv(df)
+                
 def page4():
     st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
     st.sidebar.header('')

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# In[10]:
 
 
 #!/usr/bin/env python
@@ -273,7 +273,22 @@ def page3():
     def get_data() -> pd.DataFrame:
         return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=',', encoding='utf-8', encoding_errors= 'ignore')
     data, df = get_data()
+    nb_pages = len(data)
     data = data[data.word != '...'].head(15)
+    
+    col1, col2, col3 = st.columns(3)
+    with col2:
+        st.markdown(
+            "<div style='text-align: center; font-size: 18px; font-family: Arial; font-weight: bold; color: black;'>"
+            "nb pages 👪</div>",
+            unsafe_allow_html=True
+        )
+        st.markdown(
+            "<div style='text-align: center; font-size: 35px; font-family: Arial; font-weight: bold; color: green;'>"
+            f"{nb_pages}</div>",
+            unsafe_allow_html=True
+        )
+    
     fig = px.bar(data, x = 'word', y = 'count', 
     width=1200, height=600 )
     fig.update_layout(
@@ -288,22 +303,26 @@ def page3():
     title = '📊 TOP 15 of words',
     title_x = 0.4
     ) 
+    st.write(fig)
     def get_table_download_link_csv(df):
         csv = df.to_csv(index=False, encoding = 'utf_8')
         b64 = base64.b64encode(csv.encode()).decode()  # Encoding the CSV file
         href = f'<a href="data:file/csv;base64,{b64}" download="data.csv">Download Table (CSV) File</a>'
         return href
     # Option to download the DataFrame as a CSV file
-    st.markdown(f"""<p style='text-align: center; color: Black and Neon Blue; font-size:30px;font-family: Arial; font-weight: bold'>View all table </p>""", unsafe_allow_html=True)
+    st.markdown(f"""<p style='text-align: center; color: Black and Neon Blue; font-size:30px;font-family: Arial; font-weight: bold'>{get_table_download_link_csv(df)}''</p>""", unsafe_allow_html=True)
     get_table_download_link_csv(df)
-    st.write(fig)
-                
-                
 def page4():
     st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
     st.sidebar.header('')
 def page5():
-    st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
+    st.markdown("""<style>
+        .sidebar .sidebar-content {
+            font-family: 'Arial', sans-serif;
+            font-size: 25px;
+            font-weight: bold;
+        }
+    </style>""", unsafe_allow_html=True)
     st.sidebar.header('')
         # read csv from a github repo
     dataset_url = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/main/goups_post.csv"
@@ -330,18 +349,36 @@ def page5():
     time.sleep(1)
 page_names_to_funcs = {
     "Home": main_page,
-    "Google" : page3,
+    "Google": page3,
     "Facebook": page2,
-    "Kibaru" : page4,
-    "DataTable" : page5,
+    "Kibaru": page4,
+    "DataTable": page5,
 }
+# Streamlit sidebar with icons, font, and bold text
+st.markdown(
+    """
+    <style>
+        .sidebar .sidebar-content {
+            font-family: 'Arial', sans-serif;
+            font-size: 25px;
+            font-weight: bold;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.sidebar.title("🌟 Navigation")
 
-selected_page = st.sidebar.radio("", list(page_names_to_funcs.keys()))
+# Customize the appearance of the radio buttons with icons
+selected_page = st.sidebar.radio(
+    "",
+    list(page_names_to_funcs.keys()),
+    format_func=lambda page: f"{page} {'🏠' if page == 'Home' else '🔍' if page == 'Google' else '📘' if page == 'Facebook' else '📊' if page == 'DataTable' else '⚙️'}",
+)
 
 # Call the selected page function
 page_names_to_funcs[selected_page]()
-
 
 
 # In[ ]:

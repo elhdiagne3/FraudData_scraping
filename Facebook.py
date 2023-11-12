@@ -90,10 +90,8 @@ def page2():
     # read csv from a URL
     @st.cache_data(ttl=60, persist="disk", show_spinner=False)
     def get_data() -> pd.DataFrame:
-        return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=',', encoding='utf-8', encoding_errors= 'ignore')
+        return pd.read_csv(dataset_url, sep=';', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=';', encoding='utf-8', encoding_errors= 'ignore')
     df, df1 = get_data()
-    df = pd.read_csv(dataset_url, sep=';', encoding='utf-8', encoding_errors= 'ignore')
-    df1 = pd.read_csv(dataset_url2, sep=';', encoding='utf-8', encoding_errors= 'ignore')
     #df = data
     #def show() : 
     st.sidebar.header("")

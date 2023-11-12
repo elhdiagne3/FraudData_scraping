@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[9]:
+# In[2]:
 
 
 #!/usr/bin/env python
@@ -92,6 +92,9 @@ def page2():
     def get_data() -> pd.DataFrame:
         return pd.read_csv(dataset_url, sep=';', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=';', encoding='utf-8', encoding_errors= 'ignore')
     df, df1 = get_data()
+    df.drop_duplicates('post_id', inplace = True)
+    df1.drop_duplicates('id', inplace = True)
+    df = df[df.post_id!='613.339.656.815.365']
     #df = data
     #def show() : 
     st.sidebar.header("")
@@ -116,7 +119,9 @@ def page2():
         unsafe_allow_html=True
         )
         source_filter = st.multiselect("Select the year of posts", pd.unique(df["year"]), default=default_year)
+        #source_filter_ = st.multiselect("Select the post_type of posts", pd.unique(df["post_type"]), default=default_year)
         placeholder = st.empty()
+        df = df[df.post_type == 'fraud_post']
         df = df[df["year"].isin(source_filter)]
         dfs = df['post_id'].groupby(df['year_mm']).count().reset_index()
         dfs['nb_post'] = dfs['post_id']

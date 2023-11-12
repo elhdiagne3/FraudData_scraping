@@ -99,7 +99,7 @@ def page2():
     st.sidebar.header("")
 
     left_co, cent_co,last_co = st.columns(3)
-    default_year = 2021
+    default_year = [2018, 2019,2020,2021]
     with cent_co:
         st.markdown(
         """

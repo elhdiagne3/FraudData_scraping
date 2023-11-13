@@ -272,7 +272,7 @@ def page2():
                 def get_data() -> pd.DataFrame:
                     return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore')
                 tok = get_data()
-                tokens_ = tok.word.tolist()
+                tokens_ = tok.word_.tolist()
                 bigram_phrases = Phrases([tokens_], min_count=2, threshold=1)
                 bigram_tokens = list(bigram_phrases[tokens_])
                 model = Word2Vec([bigram_tokens], vector_size=10, window=5, min_count=1, workers=4)

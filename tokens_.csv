@@ -1,29 +1,242 @@
-,word
-0,connexion
-1,internet
-2,gratuite
-3,orange
-4,mali
-5,gratuit
-6,vpn
-7,connection
-8,comment
-9,orangemali
-10,configurer
-11,mobile
-12,les
-13,offres
-14,configuration
-15,fast
-16,free
-17,your
-18,freedom
-19,forfaits
-20,box
-21,forfait
-22,bamako
-23,pass
-24,tunnel
-25,apn
-26,fraud
-27,risk
+,Word,Frequency,word_
+0,connexion,7,connexion : nb_word= 7
+1,internet,29,internet : nb_word= 29
+2,gratuite,4,gratuite : nb_word= 4
+3,orange,28,orange : nb_word= 28
+4,mali,48,mali : nb_word= 48
+5,gratuit,12,gratuit : nb_word= 12
+6,illimité,1,illimité : nb_word= 1
+7,astuces,1,astuces : nb_word= 1
+8,vpn,10,vpn : nb_word= 10
+9,connection,3,connection : nb_word= 3
+10,comment,10,comment : nb_word= 10
+11,avoir,2,avoir : nb_word= 2
+12,chez,2,chez : nb_word= 2
+13,orangemali,3,orangemali : nb_word= 3
+14,configurer,5,configurer : nb_word= 5
+15,mobile,19,mobile : nb_word= 19
+16,nouveau,2,nouveau : nb_word= 2
+17,par,1,par : nb_word= 1
+18,les,4,les : nb_word= 4
+19,offres,6,offres : nb_word= 6
+20,finchvpn,1,finchvpn : nb_word= 1
+21,inernet,1,inernet : nb_word= 1
+22,configuration,7,configuration : nb_word= 7
+23,réseau,1,réseau : nb_word= 1
+24,quel,1,quel : nb_word= 1
+25,meilleur,2,meilleur : nb_word= 2
+26,vpnmag,1,vpnmag : nb_word= 1
+27,fast,3,fast : nb_word= 3
+28,private,1,private : nb_word= 1
+29,proxy,1,proxy : nb_word= 1
+30,apps,1,apps : nb_word= 1
+31,google,1,google : nb_word= 1
+32,play,1,play : nb_word= 1
+33,get,2,get : nb_word= 2
+34,free,5,free : nb_word= 5
+35,ip,2,ip : nb_word= 2
+36,apk,1,apk : nb_word= 1
+37,dernière,1,dernière : nb_word= 1
+38,version,1,version : nb_word= 1
+39,the,2,the : nb_word= 2
+40,best,1,best : nb_word= 1
+41,swift,1,swift : nb_word= 1
+42,and,2,and : nb_word= 2
+43,secure,2,secure : nb_word= 2
+44,recrutement,1,recrutement : nb_word= 1
+45,le,5,le : nb_word= 5
+46,super,1,super : nb_word= 1
+47,unlimited,1,unlimited : nb_word= 1
+48,cv,1,cv : nb_word= 1
+49,continuer,1,continuer : nb_word= 1
+50,écouter,1,écouter : nb_word= 1
+51,rfi,1,rfi : nb_word= 1
+52,regarder,1,regarder : nb_word= 1
+53,france,2,france : nb_word= 2
+54,compte,1,compte : nb_word= 1
+55,accueil,2,accueil : nb_word= 2
+56,new,1,new : nb_word= 1
+57,youfreedom,1,youfreedom : nb_word= 1
+58,ci,2,ci : nb_word= 2
+59,your,7,your : nb_word= 7
+60,freedom,6,freedom : nb_word= 6
+61,télécharge,1,télécharge : nb_word= 1
+62,android,2,android : nb_word= 2
+63,gratis,1,gratis : nb_word= 1
+64,net,1,net : nb_word= 1
+65,camer,1,camer : nb_word= 1
+66,hackers,1,hackers : nb_word= 1
+67,afrique,1,afrique : nb_word= 1
+68,voici,1,voici : nb_word= 1
+69,la,2,la : nb_word= 2
+70,de,1,de : nb_word= 1
+71,page,1,page : nb_word= 1
+72,appeler,1,appeler : nb_word= 1
+73,indicatif,1,indicatif : nb_word= 1
+74,forfaits,4,forfaits : nb_word= 4
+75,mobiles,2,mobiles : nb_word= 2
+76,box,4,box : nb_word= 4
+77,chaîne,1,chaîne : nb_word= 1
+78,cherifla,1,cherifla : nb_word= 1
+79,tv,1,tv : nb_word= 1
+80,numéro,1,numéro : nb_word= 1
+81,accéder,1,accéder : nb_word= 1
+82,pdf,1,pdf : nb_word= 1
+83,cyberespace,1,cyberespace : nb_word= 1
+84,services,1,services : nb_word= 1
+85,ligne,2,ligne : nb_word= 2
+86,après,1,après : nb_word= 1
+87,attaque,1,attaque : nb_word= 1
+88,at,1,at : nb_word= 1
+89,digital,1,digital : nb_word= 1
+90,analytics,2,analytics : nb_word= 2
+91,resources,1,resources : nb_word= 1
+92,i,1,i : nb_word= 1
+93,radhimes,1,radhimes : nb_word= 1
+94,vlorë,1,vlorë : nb_word= 1
+95,county,1,county : nb_word= 1
+96,beach,1,beach : nb_word= 1
+97,resort,1,resort : nb_word= 1
+98,jetstar,1,jetstar : nb_word= 1
+99,hotels,1,hotels : nb_word= 1
+100,nom,1,nom : nb_word= 1
+101,hôte,1,hôte : nb_word= 1
+102,host,1,host : nb_word= 1
+103,tools,1,tools : nb_word= 1
+104,site,1,site : nb_word= 1
+105,web,2,web : nb_word= 2
+106,hors,1,hors : nb_word= 1
+107,sa,3,sa : nb_word= 3
+108,hosting,1,hosting : nb_word= 1
+109,abuse,1,abuse : nb_word= 1
+110,reports,1,reports : nb_word= 1
+111,for,2,for : nb_word= 2
+112,détails,1,détails : nb_word= 1
+113,adresse,1,adresse : nb_word= 1
+114,domaine,2,domaine : nb_word= 2
+115,analyse,1,analyse : nb_word= 1
+116,dns,1,dns : nb_word= 1
+117,mx,2,mx : nb_word= 2
+118,whois,1,whois : nb_word= 1
+119,recherche,1,recherche : nb_word= 1
+120,géolocalisation,1,géolocalisation : nb_word= 1
+121,questions,1,questions : nb_word= 1
+122,mois,1,mois : nb_word= 1
+123,forfait,6,forfait : nb_word= 6
+124,prépayé,2,prépayé : nb_word= 2
+125,damou,1,damou : nb_word= 1
+126,sotelma,2,sotelma : nb_word= 2
+127,très,1,très : nb_word= 1
+128,haut,1,haut : nb_word= 1
+129,débit,1,débit : nb_word= 1
+130,malitel,2,malitel : nb_word= 2
+131,bamako,3,bamako : nb_word= 3
+132,douman,1,douman : nb_word= 1
+133,téléphonie,1,téléphonie : nb_word= 1
+134,fixe,1,fixe : nb_word= 1
+135,adsl,1,adsl : nb_word= 1
+136,wifi,2,wifi : nb_word= 2
+137,g,3,g : nb_word= 3
+138,recharger,2,recharger : nb_word= 2
+139,profitez,1,profitez : nb_word= 1
+140,promo,1,promo : nb_word= 1
+141,spéciale,1,spéciale : nb_word= 1
+142,cédé,1,cédé : nb_word= 1
+143,jalon,1,jalon : nb_word= 1
+144,pass,3,pass : nb_word= 3
+145,m,1,m : nb_word= 1
+146,lycamobile,1,lycamobile : nb_word= 1
+147,activer,1,activer : nb_word= 1
+148,sugu,1,sugu : nb_word= 1
+149,applications,1,applications : nb_word= 1
+150,active,1,active : nb_word= 1
+151,webtunnel,1,webtunnel : nb_word= 1
+152,connecter,1,connecter : nb_word= 1
+153,tunnel,3,tunnel : nb_word= 3
+154,prodogons,1,prodogons : nb_word= 1
+155,via,1,via : nb_word= 1
+156,ils,1,ils : nb_word= 1
+157,si,2,si : nb_word= 2
+158,réels,1,réels : nb_word= 1
+159,forts,1,forts : nb_word= 1
+160,puissants,1,puissants : nb_word= 1
+161,rêves,1,rêves : nb_word= 1
+162,untm,1,untm : nb_word= 1
+163,gouvernement,1,gouvernement : nb_word= 1
+164,peut,1,peut : nb_word= 1
+165,être,1,être : nb_word= 1
+166,bout,2,bout : nb_word= 2
+167,demain,1,demain : nb_word= 1
+168,stabilisation,1,stabilisation : nb_word= 1
+169,du,2,du : nb_word= 2
+170,et,1,et : nb_word= 1
+171,sahel,1,sahel : nb_word= 1
+172,sortir,1,sortir : nb_word= 1
+173,souscrire,1,souscrire : nb_word= 1
+174,domicile,1,domicile : nb_word= 1
+175,épuisé,1,épuisé : nb_word= 1
+176,pas,1,pas : nb_word= 1
+177,panique,1,panique : nb_word= 1
+178,options,1,options : nb_word= 1
+179,pourquoi,1,pourquoi : nb_word= 1
+180,marche,1,marche : nb_word= 1
+181,tablette,1,tablette : nb_word= 1
+182,avec,1,avec : nb_word= 1
+183,composez,1,composez : nb_word= 1
+184,offre,2,offre : nb_word= 2
+185,sans,1,sans : nb_word= 1
+186,quels,1,quels : nb_word= 1
+187,différents,1,différents : nb_word= 1
+188,canaux,1,canaux : nb_word= 1
+189,consulter,1,consulter : nb_word= 1
+190,solde,1,solde : nb_word= 1
+191,acheter,1,acheter : nb_word= 1
+192,moi,1,moi : nb_word= 1
+193,assistance,2,assistance : nb_word= 2
+194,lte,1,lte : nb_word= 1
+195,apn,4,apn : nb_word= 4
+196,wiki,1,wiki : nb_word= 1
+197,guide,1,guide : nb_word= 1
+198,assurance,1,assurance : nb_word= 1
+199,eregulations,1,eregulations : nb_word= 1
+200,faq,1,faq : nb_word= 1
+201,telecel,2,telecel : nb_word= 2
+202,astucestelecel,1,astucestelecel : nb_word= 1
+203,pour,2,pour : nb_word= 2
+204,alliance,1,alliance : nb_word= 1
+205,police,1,police : nb_word= 1
+206,nationale,1,nationale : nb_word= 1
+207,settings,2,settings : nb_word= 2
+208,emploi,1,emploi : nb_word= 1
+209,head,1,head : nb_word= 1
+210,of,3,of : nb_word= 3
+211,fraud,8,fraud : nb_word= 8
+212,risk,3,risk : nb_word= 3
+213,awareness,1,awareness : nb_word= 1
+214,steps,1,steps : nb_word= 1
+215,to,2,to : nb_word= 2
+216,prevent,1,prevent : nb_word= 1
+217,detect,1,detect : nb_word= 1
+218,using,1,using : nb_word= 1
+219,data,2,data : nb_word= 2
+220,latest,1,latest : nb_word= 1
+221,jobs,1,jobs : nb_word= 1
+222,in,3,in : nb_word= 3
+223,average,1,average : nb_word= 1
+224,detection,2,detection : nb_word= 2
+225,supervisor,1,supervisor : nb_word= 1
+226,salary,1,salary : nb_word= 1
+227,aston,1,aston : nb_word= 1
+228,post,1,post : nb_word= 1
+229,move,1,move : nb_word= 1
+230,from,1,from : nb_word= 1
+231,prevention,1,prevention : nb_word= 1
+232,teradata,1,teradata : nb_word= 1
+233,be,1,be : nb_word= 1
+234,guard,1,guard : nb_word= 1
+235,rising,1,rising : nb_word= 1
+236,frauds,1,frauds : nb_word= 1
+237,attempts,1,attempts : nb_word= 1
+238,recruitment,1,recruitment : nb_word= 1
+239,sierra,1,sierra : nb_word= 1
+240,leone,1,leone : nb_word= 1

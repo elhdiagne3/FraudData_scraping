@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[116]:
+# In[11]:
 
 
 #!/usr/bin/env python
@@ -16,6 +16,17 @@ import streamlit as st  # 🎈 data web app development
 import matplotlib.pyplot as plt
 from typing import List, Tuple
 import base64
+import matplotlib.pyplot as plt
+from gensim.models import Word2Vec
+from sklearn.decomposition import PCA
+from nltk.tokenize import word_tokenize
+import nltk
+from nltk.corpus import stopwords
+import spacy
+import re
+from unidecode import unidecode
+from nltk.tokenize import word_tokenize
+from gensim.models import Word2Vec, Phrases
 
 #st.markdown("# Facebook 🎈")
 #st.sidebar.markdown("# Facebook 🎈")
@@ -98,7 +109,6 @@ def page2():
     #df = data
     #def show() : 
     st.sidebar.header("")
-
     left_co, cent_co,last_co = st.columns(3)
     default_year = [2018, 2019,2020,2021]
     with cent_co:
@@ -235,12 +245,13 @@ def page2():
                 fig.add_scatter(x=df_['year_mm'], y=df_['likes'], mode='lines', line_shape="spline",marker= dict(color = 'blue'), name='nb_likes')
                 fig.add_scatter(x=df__['year_mm'], y=df__['comments'], mode='lines', line_shape="spline", marker= dict(color = 'green'), name='nb_Comments')
                 st.plotly_chart(fig) 
-            with st.container() :
+            col1, col2 = st.columns(2)
+            with col1 :
                 df1.sort_values('members',ascending=False, inplace=True)
                 df1_ = df1[~df1.name.str.contains('MTN')].head(15)
                 df1_.sort_values('members', ascending = False, inplace = True)
                 fig = px.bar(df1_, x = 'name', y = 'members', 
-                width=1400, height=800)
+                width=600, height=800)
                 fig.update_layout(
                 xaxis_title='Name groups',
                 yaxis_title='Number of members',
@@ -253,61 +264,42 @@ def page2():
                 title = '📊 Graph III : Nb_members : Top 10 group',
                 title_x = 0.4
             )
-            st.write(fig)         
-            with st.container() : 
-                import matplotlib.pyplot as plt
-                from gensim.models import Word2Vec
-                from sklearn.decomposition import PCA
-                from nltk.tokenize import word_tokenize
-                import nltk
-                from nltk.corpus import stopwords
-                import spacy
-                #df = df.sample(5000)
-                df1['name'].fillna(".", inplace =True)
-                text = df1.name.tolist()
-                text_ =' '.join(text)
-                text_.encode('utf-16').decode('utf-16')
-                ### Text processing 
-                nlp = spacy.load("fr_core_news_md")
-                nltk.download('stopwords')
-                stop_word = stopwords.words('french')
-                doc = nlp(text_)
-                stop_word = stopwords.words('french')
-                filtered_words = [token.text for token in doc if token.is_alpha]
-                filtered_words = [x for x in filtered_words if x not in stop_word]
-                filtered_text = ' '.join(filtered_words)
-                filtered_text
-                # Tokenize the text
-                tokens = word_tokenize(filtered_text.lower())
-                from nltk.probability import FreqDist
-                freq_dist = FreqDist(tokens)
-                df_word_frequencies = pd.DataFrame(list(freq_dist.items()), columns=['Word', 'Frequency'])
-                nb_word = int(input('nbword'))
-                top_word = df_word_frequencies[df_word_frequencies.Frequency >=3]
-                tokens_ = [x for x in top_word.Word.tolist() if len(x)>=3]
-                model = Word2Vec([tokens], vector_size=10, window=5, min_count=1, workers=4)
-
-                # Get vectors for all words
-                vectors_ = [model.wv[word] for word in tokens_]
-
+                st.write(fig)         
+            with col2 : 
+                dataset_url = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/master/tokens_.csv"
+                # read csv from a URL
+                @st.cache_data(ttl=60, persist="disk", show_spinner=False)
+                def get_data() -> pd.DataFrame:
+                    return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore')
+                tok = get_data()
+                tokens_ = tok.word.tolist()
+                bigram_phrases = Phrases([tokens_], min_count=2, threshold=1)
+                bigram_tokens = list(bigram_phrases[tokens_])
+                model = Word2Vec([bigram_tokens], vector_size=10, window=5, min_count=1, workers=4)
+                vectors_ = [model.wv[word] for word in bigram_tokens]
                 # Apply PCA to reduce dimensionality to 2 for visualization
                 pca = PCA(n_components=2)
                 vectors_2d = pca.fit_transform(vectors_)
-
-                df = pd.DataFrame({'Word': tokens_, 'X': vectors_2d[:, 0], 'Y': vectors_2d[:, 1]})
-                fig = px.scatter(df, x='X', y='Y', text='Word', title='Word2Vec Vectors Visualization')
+                frame = pd.DataFrame({'Word': bigram_tokens, 'X': vectors_2d[:, 0], 'Y': vectors_2d[:, 1]})
+                fig = px.scatter(frame, x='X', y='Y', text='Word', title='Word2Vec Vectors Visualization')
                 fig.update_traces(textposition='top right')
-                fig.update_layout(width=1000, height=600)
+                fig.update_layout(width=600, height=800,title_x=0.4)
                 # Show the plot
-                st.writ(fig)
+                st.write(fig)
             from wordcloud import ImageColorGenerator
             from wordcloud import WordCloud
             with st.container() : 
                 df['text'].fillna(".", inplace =True)
-                text = df.text.tolist()
-                text_ =' '.join(text)
-                text_.encode('utf-16').decode('utf-16')
-                #Instantiate the wordcloud using color_func argument
+                text = str(df.text.tolist())
+                def custom_tokenize(text):
+                    # Remove accents using unidecode
+                    text_no_accents = unidecode(text)
+                    # Keep only alphabetic characters
+                    words = re.findall(r'\b\w+\b', text_no_accents.lower())
+                    return words
+                text_ = custom_tokenize(text)
+                text_ =' '.join(text_)
+                #text_.encode('utf-16').decode('utf-16')
                 cloud = WordCloud(font_path= 'font.ttf', width=1000, height=500,background_color='black',min_word_length =6, colormap = 'Oranges').generate(text_)
                 #Plot the wordcloud
                 #plt.figure(figsize=(15,10))
@@ -431,4 +423,10 @@ selected_page = st.sidebar.radio(
 
 # Call the selected page function
 page_names_to_funcs[selected_page]()
+
+
+# In[ ]:
+
+
+
 

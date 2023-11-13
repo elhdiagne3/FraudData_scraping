@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[116]:
 
 
 #!/usr/bin/env python
@@ -93,8 +93,8 @@ def page2():
         return pd.read_csv(dataset_url, sep=';', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=';', encoding='utf-8', encoding_errors= 'ignore')
     df, df1 = get_data()
     df.drop_duplicates('post_id', inplace = True)
-    df1.drop_duplicates('id', inplace = True)
     df = df[df.post_id!='613.339.656.815.365']
+    df1.drop_duplicates('id', inplace = True)
     #df = data
     #def show() : 
     st.sidebar.header("")
@@ -138,7 +138,7 @@ def page2():
 
     for seconds in range(200):
         # creating KPIs
-        nb_group = df1['id'].count()
+        nb_group = df1.id.count()
         nb_member = df1['members'].sum()
         nb_post = df["post_id"].count()
         nb_likes = int(df.likes.sum())
@@ -254,6 +254,52 @@ def page2():
                 title_x = 0.4
             )
             st.write(fig)         
+            with st.container() : 
+                import matplotlib.pyplot as plt
+                from gensim.models import Word2Vec
+                from sklearn.decomposition import PCA
+                from nltk.tokenize import word_tokenize
+                import nltk
+                from nltk.corpus import stopwords
+                import spacy
+                #df = df.sample(5000)
+                df1['name'].fillna(".", inplace =True)
+                text = df1.name.tolist()
+                text_ =' '.join(text)
+                text_.encode('utf-16').decode('utf-16')
+                ### Text processing 
+                nlp = spacy.load("fr_core_news_md")
+                nltk.download('stopwords')
+                stop_word = stopwords.words('french')
+                doc = nlp(text_)
+                stop_word = stopwords.words('french')
+                filtered_words = [token.text for token in doc if token.is_alpha]
+                filtered_words = [x for x in filtered_words if x not in stop_word]
+                filtered_text = ' '.join(filtered_words)
+                filtered_text
+                # Tokenize the text
+                tokens = word_tokenize(filtered_text.lower())
+                from nltk.probability import FreqDist
+                freq_dist = FreqDist(tokens)
+                df_word_frequencies = pd.DataFrame(list(freq_dist.items()), columns=['Word', 'Frequency'])
+                nb_word = int(input('nbword'))
+                top_word = df_word_frequencies[df_word_frequencies.Frequency >=3]
+                tokens_ = [x for x in top_word.Word.tolist() if len(x)>=3]
+                model = Word2Vec([tokens], vector_size=10, window=5, min_count=1, workers=4)
+
+                # Get vectors for all words
+                vectors_ = [model.wv[word] for word in tokens_]
+
+                # Apply PCA to reduce dimensionality to 2 for visualization
+                pca = PCA(n_components=2)
+                vectors_2d = pca.fit_transform(vectors_)
+
+                df = pd.DataFrame({'Word': tokens_, 'X': vectors_2d[:, 0], 'Y': vectors_2d[:, 1]})
+                fig = px.scatter(df, x='X', y='Y', text='Word', title='Word2Vec Vectors Visualization')
+                fig.update_traces(textposition='top right')
+                fig.update_layout(width=1000, height=600)
+                # Show the plot
+                st.writ(fig)
             from wordcloud import ImageColorGenerator
             from wordcloud import WordCloud
             with st.container() : 
@@ -262,7 +308,7 @@ def page2():
                 text_ =' '.join(text)
                 text_.encode('utf-16').decode('utf-16')
                 #Instantiate the wordcloud using color_func argument
-                cloud = WordCloud(font_path= 'font.ttf', width=1000, height=500,background_color='black',min_word_length = 6, colormap = 'Oranges').generate(text_)
+                cloud = WordCloud(font_path= 'font.ttf', width=1000, height=500,background_color='black',min_word_length =6, colormap = 'Oranges').generate(text_)
                 #Plot the wordcloud
                 #plt.figure(figsize=(15,10))
                 #plt.text(0.5, 1.15, f"Word Cloud Fraud Data Post", size=24, ha='center', transform=plt.gca().transAxes
@@ -278,7 +324,7 @@ def page3():
     def get_data() -> pd.DataFrame:
         return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=',', encoding='utf-8', encoding_errors= 'ignore')
     data, df = get_data()
-    nb_pages = len(data)
+    nb_pages = data.drop_duplicates().shape[0]
     data = data[data.word != '...'].head(15)
     
     col1, col2, col3 = st.columns(3)
@@ -385,10 +431,4 @@ selected_page = st.sidebar.radio(
 
 # Call the selected page function
 page_names_to_funcs[selected_page]()
-
-
-# In[ ]:
-
-
-
 

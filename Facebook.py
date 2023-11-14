@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[11]:
+# In[12]:
 
 
 #!/usr/bin/env python
@@ -264,28 +264,7 @@ def page2():
                 title = '📊 Graph III : Nb_members : Top 10 group',
                 title_x = 0.4
             )
-                st.write(fig)         
-            with col2 : 
-                dataset_url = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/master/tokens_.csv"
-                # read csv from a URL
-                @st.cache_data(ttl=60, persist="disk", show_spinner=False)
-                def get_data() -> pd.DataFrame:
-                    return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore')
-                tok = get_data()
-                tokens_ = tok.word_.tolist()
-                bigram_phrases = Phrases([tokens_], min_count=2, threshold=1)
-                bigram_tokens = list(bigram_phrases[tokens_])
-                model = Word2Vec([bigram_tokens], vector_size=10, window=5, min_count=1, workers=4)
-                vectors_ = [model.wv[word] for word in bigram_tokens]
-                # Apply PCA to reduce dimensionality to 2 for visualization
-                pca = PCA(n_components=2)
-                vectors_2d = pca.fit_transform(vectors_)
-                frame = pd.DataFrame({'Word': bigram_tokens, 'X': vectors_2d[:, 0], 'Y': vectors_2d[:, 1]})
-                fig = px.scatter(frame, x='X', y='Y', text='Word', title='Word2Vec Vectors Visualization')
-                fig.update_traces(textposition='top right')
-                fig.update_layout(width=600, height=800,title_x=0.4)
-                # Show the plot
-                st.write(fig)
+            st.write(fig)         
             from wordcloud import ImageColorGenerator
             from wordcloud import WordCloud
             with st.container() : 
@@ -316,7 +295,8 @@ def page3():
     def get_data() -> pd.DataFrame:
         return pd.read_csv(dataset_url, sep=',', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=',', encoding='utf-8', encoding_errors= 'ignore')
     data, df = get_data()
-    nb_pages = data.drop_duplicates().shape[0]
+    df = df[~df.Link.str.contains('orangemali.com')]
+    nb_pages = df.drop_duplicates().shape[0]
     data = data[data.word != '...'].head(15)
     
     col1, col2, col3 = st.columns(3)
@@ -423,10 +403,4 @@ selected_page = st.sidebar.radio(
 
 # Call the selected page function
 page_names_to_funcs[selected_page]()
-
-
-# In[ ]:
-
-
-
 

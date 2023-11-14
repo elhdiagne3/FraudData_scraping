@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 from typing import List, Tuple
 import base64
 import matplotlib.pyplot as plt
-from gensim.models import Word2Vec
+#from gensim.models import Word2Vec
 from sklearn.decomposition import PCA
 from nltk.tokenize import word_tokenize
 import nltk

@@ -17,16 +17,6 @@ import matplotlib.pyplot as plt
 from typing import List, Tuple
 import base64
 import matplotlib.pyplot as plt
-#from gensim.models import Word2Vec
-#from sklearn.decomposition import PCA
-#from nltk.tokenize import word_tokenize
-#import nltk
-#from nltk.corpus import stopwords
-#import spacy
-#import re
-#from unidecode import unidecode
-#from nltk.tokenize import word_tokenize
-#from gensim.models import Word2Vec, Phrases
 
 #st.markdown("# Facebook 🎈")
 #st.sidebar.markdown("# Facebook 🎈")
@@ -246,12 +236,12 @@ def page2():
                 fig.add_scatter(x=df__['year_mm'], y=df__['comments'], mode='lines', line_shape="spline", marker= dict(color = 'green'), name='nb_Comments')
                 st.plotly_chart(fig) 
             col1, col2 = st.columns(2)
-            with col1 :
+            with st.container() :
                 df1.sort_values('members',ascending=False, inplace=True)
                 df1_ = df1[~df1.name.str.contains('MTN')].head(15)
                 df1_.sort_values('members', ascending = False, inplace = True)
                 fig = px.bar(df1_, x = 'name', y = 'members', 
-                width=600, height=800)
+                width=1400, height=800)
                 fig.update_layout(
                 xaxis_title='Name groups',
                 yaxis_title='Number of members',
@@ -269,21 +259,15 @@ def page2():
             from wordcloud import WordCloud
             with st.container() : 
                 df['text'].fillna(".", inplace =True)
-                text = str(df.text.tolist())
-                def custom_tokenize(text):
-                    # Remove accents using unidecode
-                    text_no_accents = unidecode(text)
-                    # Keep only alphabetic characters
-                    words = re.findall(r'\b\w+\b', text_no_accents.lower())
-                    return words
-                text_ = custom_tokenize(text)
-                text_ =' '.join(text_)
-                #text_.encode('utf-16').decode('utf-16')
-                cloud = WordCloud(font_path= 'font.ttf', width=1000, height=500,background_color='black',min_word_length =6, colormap = 'Oranges').generate(text_)
+                text = df.text.tolist()
+                text_ =' '.join(text)
+                text_.encode('utf-16').decode('utf-16')
+                #Instantiate the wordcloud using color_func argument
+                cloud = WordCloud(font_path= 'font.ttf', width=1000, height=500,background_color='black',min_word_length = 6, colormap = 'Oranges').generate(text_)
                 #Plot the wordcloud
                 #plt.figure(figsize=(15,10))
                 #plt.text(0.5, 1.15, f"Word Cloud Fraud Data Post", size=24, ha='center', transform=plt.gca().transAxes
-                st.markdown("""<p text-align: centerstyle='color: Black and Neon Blue; font-size:15px;font-family: Arial; font-weight: bold'>📚 WordCloud Data Fraud 2021-2023. </p>""", unsafe_allow_html = True) 
+                st.markdown("""<p text-align: center; style='color: Black and Neon Blue; font-size:15px;font-family: Arial; font-weight: bold'>📚 WordCloud Data Fraud 2021-2023. </p>""", unsafe_allow_html = True) 
                 st.image(cloud.to_array(), width=0, use_column_width=True,caption = "" )
 def page3():
     st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)

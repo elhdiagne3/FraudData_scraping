@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[12]:
+# In[13]:
 
 
 #!/usr/bin/env python
@@ -9,14 +9,27 @@
 # In[2]:
 import time  # to simulate a real time data, time loop
 from PIL import Image
+import seaborn as sns
 import numpy as np  # np mean, np random
 import pandas as pd  # read csv, df manipulation
 import plotly.express as px  # interactive charts
-import streamlit as st  # 🎈 data web app development
+import streamlit as st  
 import matplotlib.pyplot as plt
 from typing import List, Tuple
 import base64
 import matplotlib.pyplot as plt
+from wordcloud import ImageColorGenerator
+from wordcloud import WordCloud
+from bokeh.io import output_notebook, show
+from bokeh.models import ColumnDataSource, Div, Slider, CustomJS
+from bokeh.layouts import Column
+output_notebook() #create default state to generate the output
+from bokeh.models import Slider, Div, CustomJS, Column
+from bokeh.layouts import layout
+from bokeh.io import show
+from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import CountVectorizer
+from collections import  Counter
 
 #st.markdown("# Facebook 🎈")
 #st.sidebar.markdown("# Facebook 🎈")
@@ -88,11 +101,12 @@ def page2():
     # read csv from a github repo
     dataset_url = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/master/goups_post.csv"
     dataset_url2 = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/master/group.csv"
+    dataset_url3 = "https://raw.githubusercontent.com/elhdiagne3/FraudData_scraping/master/all_link.csv"
     # read csv from a URL
     @st.cache_data(ttl=60, persist="disk", show_spinner=False)
     def get_data() -> pd.DataFrame:
-        return pd.read_csv(dataset_url, sep=';', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=';', encoding='utf-8', encoding_errors= 'ignore')
-    df, df1 = get_data()
+        return pd.read_csv(dataset_url, sep=';', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url2, sep=';', encoding='utf-8', encoding_errors= 'ignore'), pd.read_csv(dataset_url3, sep=',', encoding='utf-8', encoding_errors= 'ignore')
+    df, df1, df2 = get_data()
     df.drop_duplicates('post_id', inplace = True)
     df = df[df.post_id!='613.339.656.815.365']
     df1.drop_duplicates('id', inplace = True)
@@ -100,7 +114,7 @@ def page2():
     #def show() : 
     st.sidebar.header("")
     left_co, cent_co,last_co = st.columns(3)
-    default_year = [2018, 2019,2020,2021]
+    default_year = [2021,2022,2023]
     with cent_co:
         st.markdown(
         """
@@ -236,12 +250,12 @@ def page2():
                 fig.add_scatter(x=df__['year_mm'], y=df__['comments'], mode='lines', line_shape="spline", marker= dict(color = 'green'), name='nb_Comments')
                 st.plotly_chart(fig) 
             col1, col2 = st.columns(2)
-            with st.container() :
+            with col1 :
                 df1.sort_values('members',ascending=False, inplace=True)
                 df1_ = df1[~df1.name.str.contains('MTN')].head(15)
                 df1_.sort_values('members', ascending = False, inplace = True)
                 fig = px.bar(df1_, x = 'name', y = 'members', 
-                width=1400, height=800)
+                width=600, height=800)
                 fig.update_layout(
                 xaxis_title='Name groups',
                 yaxis_title='Number of members',
@@ -254,21 +268,100 @@ def page2():
                 title = '📊 Graph III : Nb_members : Top 10 group',
                 title_x = 0.4
             )
-            st.write(fig)         
-            from wordcloud import ImageColorGenerator
-            from wordcloud import WordCloud
-            with st.container() : 
+                st.write(fig)        
+            with col2 : 
                 df['text'].fillna(".", inplace =True)
+                df = df[~((df.text.str.contains('ivoire')) | (df.text.str.contains('Faso')))]
                 text = df.text.tolist()
                 text_ =' '.join(text)
                 text_.encode('utf-16').decode('utf-16')
                 #Instantiate the wordcloud using color_func argument
-                cloud = WordCloud(font_path= 'font.ttf', width=1000, height=500,background_color='black',min_word_length = 6, colormap = 'Oranges').generate(text_)
+                cloud = WordCloud(font_path= 'font.ttf', width=600, height=550,colormap= 'Oranges',background_color='black',min_word_length =4).generate(text_)
                 #Plot the wordcloud
                 #plt.figure(figsize=(15,10))
                 #plt.text(0.5, 1.15, f"Word Cloud Fraud Data Post", size=24, ha='center', transform=plt.gca().transAxes
-                st.markdown("""<p text-align: center; style='color: Black and Neon Blue; font-size:15px;font-family: Arial; font-weight: bold'>📚 WordCloud Data Fraud 2021-2023. </p>""", unsafe_allow_html = True) 
+                st.markdown("""<p text-align: centerstyle='color: Black and Neon Blue; font-size:15px;font-family: Arial; font-weight: bold'>📚 WordCloud Data Fraud 2021-2023. </p>""", unsafe_allow_html = True) 
                 st.image(cloud.to_array(), width=0, use_column_width=True,caption = "" )
+            col1, col2 = st.columns(2)
+            with st.container() :
+                with col1 : 
+                    df_tlg= df2[df2.link.str.contains('https://t.me')]
+                    df_tlg.sort_values('count',ascending=False, inplace=True)
+                    df_tlg = df_tlg.head(10)
+                    fig = px.bar(df_tlg, x = 'link', y = 'count', 
+                    width=600, height=800)
+                    fig.update_layout(
+                    xaxis_title='telegram_link',
+                    yaxis_title='Number of posts',
+                    plot_bgcolor='white',  # Transparent plot background
+                    paper_bgcolor='rgb(255,255,255)',  # White background
+                    font=dict(family='Arial', size=12, color='black'),  # Font style
+                    margin=dict(l=50, r=50, t=50, b=50),  # Setting margins
+                    xaxis=dict(tickangle=45),  # Rotating x-axis labels
+                    yaxis=dict(tickformat=',d'),  # Adding comma to y-axis labels for thousands separator, 
+                    title = '📊 TOP 10 Telegram Link : Number of posts',
+                    bargap=0.02,
+                    title_x = 0.4)
+                    st.write(fig)   
+                with col2 : 
+                    df_wts= df2[df2.link.str.contains('https://chat.whatsapp')]
+                    df_wts.sort_values('count',ascending=False, inplace=True)
+                    df_wts = df_wts.head(10)
+                    fig = px.bar(df_wts, x = 'link', y = 'count', 
+                    width=600, height=800,color_discrete_sequence =['green']*len(df_wts))
+                    fig.update_layout(
+                    xaxis_title='WhatsApp_link',
+                    yaxis_title='Number of posts',
+                    plot_bgcolor='white',  # Transparent plot background
+                    paper_bgcolor='rgb(255,255,255)',  # White background
+                    font=dict(family='Arial', size=12, color='black'),  # Font style
+                    margin=dict(l=50, r=50, t=50, b=50),  # Setting margins
+                    bargap=0.02,
+                    xaxis=dict(tickangle=45),  # Rotating x-axis labels
+                    yaxis=dict(tickformat=',d'),  # Adding comma to y-axis labels for thousands separator, 
+                    title = '📊 TOP 10 WhatsApp Link : Number of posts',
+                    title_x = 0.4)
+                    st.write(fig)
+                    ######################  Interactive dashboard (Bokeh) #########
+            with st.container() :
+                df['text2'] = df.text.str.lower()
+                data_ = df[(df.text2.str.contains('internet')) & (df.year_mm.str.contains('2023-10', '2023-11')) ]
+                data_ = data_.sort_values('comments', ascending=False).head(25)
+                data_ = data_[['post_id', 'text']]
+                cds = ColumnDataSource(data_)
+
+                from bokeh.models import Slider, Div, CustomJS, Column
+                from bokeh.layouts import layout
+                from bokeh.io import show
+
+                # Assuming you have a ColumnDataSource 'cds' with 'text' and 'post_id' columns
+
+                # Create slider, div_text, and div_label
+                slider = Slider(title='Post_id', start=0, end=data_.shape[0]-1, value=0)
+                div_text = Div(text="Facebook post Text:", width=660, height=100)
+                div_label = Div(text="post Label:", width=600, height=100)
+
+                initial_text = cds.data['text'][1]
+                initial_label = cds.data['post_id'][1]
+                div_text.text = 'post Text:<br>' + initial_text
+                div_label.text = 'post ID:<br>' + str(initial_label)
+
+                # Define a callback function for the slider
+                slider_callback = CustomJS(args=dict(slider=slider, div_text=div_text, div_label=div_label, cds=cds), code='''
+                    var post_text = cds.data['text'][slider.value];
+                    var post_label = cds.data['post_id'][slider.value];
+                    div_text.text = 'Post Text:<br>' + post_text;
+                    div_label.text = 'Post Label:<br>' + post_label;
+                ''') 
+
+                # Attach the callback to the 'value' property of the slider
+                slider.js_on_change('value', slider_callback)
+
+                # Arrange the components in a layout
+                layout = layout([[slider], [div_text, div_label]])
+                # Show the layout
+                st.bokeh_chart(layout)
+
 def page3():
     st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
     st.sidebar.header('')
@@ -282,35 +375,62 @@ def page3():
     df = df[~df.Link.str.contains('orangemali.com')]
     nb_pages = df.drop_duplicates().shape[0]
     data = data[data.word != '...'].head(15)
-    
-    col1, col2, col3 = st.columns(3)
-    with col2:
-        st.markdown(
-            "<div style='text-align: center; font-size: 18px; font-family: Arial; font-weight: bold; color: black;'>"
-            "nb pages 👪</div>",
-            unsafe_allow_html=True
-        )
-        st.markdown(
-            "<div style='text-align: center; font-size: 35px; font-family: Arial; font-weight: bold; color: green;'>"
-            f"{nb_pages}</div>",
-            unsafe_allow_html=True
-        )
-    
-    fig = px.bar(data, x = 'word', y = 'count', 
-    width=1200, height=600 )
-    fig.update_layout(
-    xaxis_title='words',
-    yaxis_title='Frequency of word',
-    plot_bgcolor='white',  # Transparent plot background
-    paper_bgcolor='rgb(250,250,250)',  # White background
-    font=dict(family='Arial', size=12, color='black'),  # Font style
-    margin=dict(l=50, r=50, t=50, b=50),  # Setting margins
-    xaxis=dict(tickangle=45),  # Rotating x-axis labels
-    yaxis=dict(tickformat=',d'),  # Adding comma to y-axis labels for thousands separator, 
-    title = '📊 TOP 15 of words',
-    title_x = 0.4
-    ) 
-    st.write(fig)
+    with st.container() : 
+        col1, col2, col3 = st.columns(3)
+        with col2:
+            st.markdown(
+                "<div style='text-align: center; font-size: 18px; font-family: Arial; font-weight: bold; color: black;'>"
+                "nb pages 👪</div>",
+                unsafe_allow_html=True
+            )
+            st.markdown(
+                "<div style='text-align: center; font-size: 35px; font-family: Arial; font-weight: bold; color: green;'>"
+                f"{nb_pages}</div>",
+                unsafe_allow_html=True
+            )
+        col1, col2 = st.columns(2)
+        with col1:
+            fig = px.bar(data, x = 'word', y = 'count', 
+            width=600, height=600 )
+            fig.update_layout(
+            xaxis_title='words',
+            yaxis_title='Frequency of word',
+            plot_bgcolor='white',  # Transparent plot background
+            paper_bgcolor='rgb(250,250,250)',  # White background
+            font=dict(family='Arial', size=12, color='black'),  # Font style
+            margin=dict(l=50, r=50, t=50, b=50),  # Setting margins
+            xaxis=dict(tickangle=45),  # Rotating x-axis labels
+            yaxis=dict(tickformat=',d'),  # Adding comma to y-axis labels for thousands separator, 
+            title = '📊 TOP 15 of words',
+            title_x = 0.4
+            ) 
+            st.write(fig)
+        with col2 :
+            def plot_top_ngrams_barchart(text, n=3):
+                stop=set(stopwords.words('french'))
+                new= text.str.split()
+                new=new.values.tolist()
+                corpus=[word for i in new for word in i]
+
+                def _get_top_ngram(corpus, n=None):
+                    vec = CountVectorizer(ngram_range=(n, n)).fit(corpus)
+                    bag_of_words = vec.transform(corpus)
+                    sum_words = bag_of_words.sum(axis=0) 
+                    words_freq = [(word, sum_words[0, idx]) 
+                                  for word, idx in vec.vocabulary_.items()]
+                    words_freq =sorted(words_freq, key = lambda x: x[1], reverse=True)
+                    return words_freq[:15]
+
+
+                top_n_bigrams=_get_top_ngram(text,n)[:15]
+                x,y=map(list,zip(*top_n_bigrams))
+                plt.figure(figsize=(6, 8))
+                plot = sns.barplot(x=y, y=x)  # Adjust palette as needed
+                plot.set_title(f"Top {n}-Grams Barplot")
+            st.set_option('deprecation.showPyplotGlobalUse', False)
+            plt.title(f"Top {3}-Grams Barplot")
+            plot_top_ngrams_barchart(df['Title'],3)
+            st.pyplot()
     def get_table_download_link_csv(df):
         csv = df.to_csv(index=False, encoding = 'utf_8')
         b64 = base64.b64encode(csv.encode()).decode()  # Encoding the CSV file
@@ -319,6 +439,7 @@ def page3():
     # Option to download the DataFrame as a CSV file
     st.markdown(f"""<p style='text-align: center; color: Black and Neon Blue; font-size:30px;font-family: Arial; font-weight: bold'>{get_table_download_link_csv(df)}''</p>""", unsafe_allow_html=True)
     get_table_download_link_csv(df)
+ 
                 
 def page4():
     st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
@@ -376,13 +497,13 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.sidebar.title("🌟 Navigation")
+st.sidebar.title("Navigation")
 
 # Customize the appearance of the radio buttons with icons
 selected_page = st.sidebar.radio(
     "",
     list(page_names_to_funcs.keys()),
-    format_func=lambda page: f"{page} {'🏠' if page == 'Home' else '🔍' if page == 'Google' else '📘' if page == 'Facebook' else '📊' if page == 'DataTable' else '⚙️'}",
+    format_func=lambda page: f"{page} {'🏠' if page == 'Home' else '🔍' if page == 'Google' else '' if page == 'Facebook' else '📊' if page == 'DataTable' else ''}",
 )
 
 # Call the selected page function

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[13]:
+# In[15]:
 
 
 #!/usr/bin/env python
@@ -23,14 +23,15 @@ from wordcloud import WordCloud
 from bokeh.io import output_notebook, show
 from bokeh.models import ColumnDataSource, Div, Slider, CustomJS
 from bokeh.layouts import Column
-output_notebook() #create default state to generate the output
+#output_notebook() #create default state to generate the output
 from bokeh.models import Slider, Div, CustomJS, Column
 from bokeh.layouts import layout
 from bokeh.io import show
+import nltk
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import CountVectorizer
 from collections import  Counter
-
+nltk.download('stopwords')
 #st.markdown("# Facebook 🎈")
 #st.sidebar.markdown("# Facebook 🎈")
 st.set_page_config(
@@ -276,7 +277,7 @@ def page2():
                 text_ =' '.join(text)
                 text_.encode('utf-16').decode('utf-16')
                 #Instantiate the wordcloud using color_func argument
-                cloud = WordCloud(font_path= 'font.ttf', width=600, height=550,colormap= 'Oranges',background_color='black',min_word_length =4).generate(text_)
+                cloud = WordCloud(font_path= 'font.ttf', width=600, height=550,colormap= 'rainbow',background_color='black',min_word_length =4).generate(text_)
                 #Plot the wordcloud
                 #plt.figure(figsize=(15,10))
                 #plt.text(0.5, 1.15, f"Word Cloud Fraud Data Post", size=24, ha='center', transform=plt.gca().transAxes
@@ -420,7 +421,6 @@ def page3():
                                   for word, idx in vec.vocabulary_.items()]
                     words_freq =sorted(words_freq, key = lambda x: x[1], reverse=True)
                     return words_freq[:15]
-
 
                 top_n_bigrams=_get_top_ngram(text,n)[:15]
                 x,y=map(list,zip(*top_n_bigrams))

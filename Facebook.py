@@ -14,7 +14,7 @@ import numpy as np  # np mean, np random
 import pandas as pd  # read csv, df manipulation
 import plotly.express as px  # interactive charts
 import streamlit as st  
-import streamlit_authenticator as stauth
+#import streamlit_authenticator as stauth
 import matplotlib.pyplot as plt
 from typing import List, Tuple
 import base64
@@ -40,21 +40,6 @@ st.set_page_config(
         page_icon="🤳",
         layout="wide"
     )
-from credentials import user_credentials  # Import user_credentials from the external file
-
-def login():
-    st.title("Login Page")
-
-    username = st.text_input("Username")
-    password = st.text_input("Password", type='password')
-
-    if st.button("Login"):
-        if username == user_credentials['username'] and password == user_credentials['password']:
-            st.success("Login successful!")
-            return True
-        else:
-            st.error("Invalid username or password.")
-            return False
 
 def main_page():
     

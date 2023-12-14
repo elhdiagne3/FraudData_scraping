@@ -1,9 +1,0 @@
-[theme] # You have to add this line
-
-primaryColor = 'green' # Bright Orange
-
-backgroundColor = '#F5F5F5' # Dark Blue
-
-secondaryBackgroundColor = '#55B2FF' # Lighter Blue
-
-sidebar = { "backgroundColor": '#FF8C02' "contrast": 1.5 }

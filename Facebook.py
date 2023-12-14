@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[15]:
+# In[28]:
 
 
 #!/usr/bin/env python
@@ -14,6 +14,7 @@ import numpy as np  # np mean, np random
 import pandas as pd  # read csv, df manipulation
 import plotly.express as px  # interactive charts
 import streamlit as st  
+import streamlit_authenticator as stauth
 import matplotlib.pyplot as plt
 from typing import List, Tuple
 import base64
@@ -39,6 +40,21 @@ st.set_page_config(
         page_icon="🤳",
         layout="wide"
     )
+from credentials import user_credentials  # Import user_credentials from the external file
+
+def login():
+    st.title("Login Page")
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type='password')
+
+    if st.button("Login"):
+        if username == user_credentials['username'] and password == user_credentials['password']:
+            st.success("Login successful!")
+            return True
+        else:
+            st.error("Invalid username or password.")
+            return False
 
 def main_page():
     
@@ -253,7 +269,8 @@ def page2():
             col1, col2 = st.columns(2)
             with col1 :
                 df1.sort_values('members',ascending=False, inplace=True)
-                df1_ = df1[~df1.name.str.contains('MTN')].head(15)
+                df1['name'] = df1.name.str.lower()
+                df1_ = df1[~((df1.name.str.contains('ci')) | (df1.name.str.contains('mtn')) | (df1.name.str.contains('rdc')) | (df1.name.str.contains('camero')))].head(15)
                 df1_.sort_values('members', ascending = False, inplace = True)
                 fig = px.bar(df1_, x = 'name', y = 'members', 
                 width=600, height=800)
@@ -272,7 +289,8 @@ def page2():
                 st.write(fig)        
             with col2 : 
                 df['text'].fillna(".", inplace =True)
-                df = df[~((df.text.str.contains('ivoire')) | (df.text.str.contains('Faso')))]
+                df['text'] = df.text.str.lower()
+                df = df[~((df.text.str.contains('ivoire')) | (df.text.str.contains('faso')) | (df.text.str.contains('camero')) | (df.text.str.contains('benin')) |(df.text.str.contains('mtn')) )]
                 text = df.text.tolist()
                 text_ =' '.join(text)
                 text_.encode('utf-16').decode('utf-16')
@@ -289,40 +307,16 @@ def page2():
                     df_tlg= df2[df2.link.str.contains('https://t.me')]
                     df_tlg.sort_values('count',ascending=False, inplace=True)
                     df_tlg = df_tlg.head(10)
-                    fig = px.bar(df_tlg, x = 'link', y = 'count', 
-                    width=600, height=800)
-                    fig.update_layout(
-                    xaxis_title='telegram_link',
-                    yaxis_title='Number of posts',
-                    plot_bgcolor='white',  # Transparent plot background
-                    paper_bgcolor='rgb(255,255,255)',  # White background
-                    font=dict(family='Arial', size=12, color='black'),  # Font style
-                    margin=dict(l=50, r=50, t=50, b=50),  # Setting margins
-                    xaxis=dict(tickangle=45),  # Rotating x-axis labels
-                    yaxis=dict(tickformat=',d'),  # Adding comma to y-axis labels for thousands separator, 
-                    title = '📊 TOP 10 Telegram Link : Number of posts',
-                    bargap=0.02,
-                    title_x = 0.4)
-                    st.write(fig)   
+                    df_tlg = df_tlg[['link', 'count']]
+                    st.write('TOP 10 Telegram Link : Number of posts') 
+                    st.table(df_tlg)
                 with col2 : 
                     df_wts= df2[df2.link.str.contains('https://chat.whatsapp')]
                     df_wts.sort_values('count',ascending=False, inplace=True)
                     df_wts = df_wts.head(10)
-                    fig = px.bar(df_wts, x = 'link', y = 'count', 
-                    width=600, height=800,color_discrete_sequence =['green']*len(df_wts))
-                    fig.update_layout(
-                    xaxis_title='WhatsApp_link',
-                    yaxis_title='Number of posts',
-                    plot_bgcolor='white',  # Transparent plot background
-                    paper_bgcolor='rgb(255,255,255)',  # White background
-                    font=dict(family='Arial', size=12, color='black'),  # Font style
-                    margin=dict(l=50, r=50, t=50, b=50),  # Setting margins
-                    bargap=0.02,
-                    xaxis=dict(tickangle=45),  # Rotating x-axis labels
-                    yaxis=dict(tickformat=',d'),  # Adding comma to y-axis labels for thousands separator, 
-                    title = '📊 TOP 10 WhatsApp Link : Number of posts',
-                    title_x = 0.4)
-                    st.write(fig)
+                    df_wts = df_wts[['link', 'count']]
+                    st.write('TOP 10 WhatsApp Link : Number of posts') 
+                    st.table(df_wts)
                     ######################  Interactive dashboard (Bokeh) #########
             with st.container() :
                 df['text2'] = df.text.str.lower()
@@ -334,8 +328,6 @@ def page2():
                 from bokeh.models import Slider, Div, CustomJS, Column
                 from bokeh.layouts import layout
                 from bokeh.io import show
-
-                # Assuming you have a ColumnDataSource 'cds' with 'text' and 'post_id' columns
 
                 # Create slider, div_text, and div_label
                 slider = Slider(title='Post_id', start=0, end=data_.shape[0]-1, value=0)
@@ -431,14 +423,17 @@ def page3():
             plt.title(f"Top {3}-Grams Barplot")
             plot_top_ngrams_barchart(df['Title'],3)
             st.pyplot()
-    def get_table_download_link_csv(df):
-        csv = df.to_csv(index=False, encoding = 'utf_8')
-        b64 = base64.b64encode(csv.encode()).decode()  # Encoding the CSV file
-        href = f'<a href="data:file/csv;base64,{b64}" download="data.csv">Download Table (CSV) File</a>'
-        return href
-    # Option to download the DataFrame as a CSV file
-    st.markdown(f"""<p style='text-align: center; color: Black and Neon Blue; font-size:30px;font-family: Arial; font-weight: bold'>{get_table_download_link_csv(df)}''</p>""", unsafe_allow_html=True)
-    get_table_download_link_csv(df)
+        with st.container() : 
+            st.markdown("""<style>
+        .sidebar .sidebar-content {
+            font-family: 'Arial', sans-serif;
+            font-size: 25px;
+            text-align : center;
+            font-weight: bold;
+        }
+    </style>""", unsafe_allow_html=True)
+            st.title('Table google page')
+            st.write(df.sample(30))
  
                 
 def page4():

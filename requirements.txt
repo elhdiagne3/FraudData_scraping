@@ -3,7 +3,7 @@ seaborn==0.12.2
 numpy==1.23.5
 pandas==1.5.3
 plotly==5.11.0
-streamlit==1.23.1
+streamlit==1.28.1
 streamlit-authenticator==0.1.2
 matplotlib==3.7.1
 wordcloud==1.8.2.2

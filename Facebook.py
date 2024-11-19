@@ -59,7 +59,7 @@ def login():
 def main_page():
     
     col1, col2, col3 = st.columns(3)
-    image = Image.open("C:/Users/diagne080894/Facebook/MyStApps/téléchargement.png")
+    image = Image.open("téléchargement.png")
     with col1 : 
         st.markdown(
         """

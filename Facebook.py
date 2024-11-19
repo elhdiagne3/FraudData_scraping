@@ -59,7 +59,7 @@ def login():
 def main_page():
     
     col1, col2, col3 = st.columns(3)
-    #image = Image.open("ds.jpeg")
+    image = Image.open("C:/Users/diagne080894/Facebook/MyStApps/téléchargement.png")
     with col1 : 
         st.markdown(
         """
@@ -74,7 +74,7 @@ def main_page():
                     color: Ivory;
                 } </style>
         """, unsafe_allow_html=True)
-        #st.image(image, width=75)
+        st.image(image, width=75)
     ###################### dashboard title
     with col2 : 
         st.markdown(
@@ -295,12 +295,14 @@ def page2():
                 text_ =' '.join(text)
                 text_.encode('utf-16').decode('utf-16')
                 #Instantiate the wordcloud using color_func argument
-                cloud = WordCloud(font_path= 'font.ttf', width=600, height=550,colormap= 'rainbow',background_color='black',min_word_length =4).generate(text_)
+                cloud = WordCloud(font_path=None, width=600, height=550, colormap='rainbow', background_color='black', min_word_length=4).generate(text_)
+
+
                 #Plot the wordcloud
                 #plt.figure(figsize=(15,10))
                 #plt.text(0.5, 1.15, f"Word Cloud Fraud Data Post", size=24, ha='center', transform=plt.gca().transAxes
                 st.markdown("""<p text-align: centerstyle='color: Black and Neon Blue; font-size:15px;font-family: Arial; font-weight: bold'>📚 WordCloud Data Fraud 2021-2023. </p>""", unsafe_allow_html = True) 
-                st.image(cloud.to_array(), width=0, use_column_width=True,caption = "" )
+                st.image(cloud.to_array(), width=10, use_column_width=True,caption = "" )
             col1, col2 = st.columns(2)
             with st.container() :
                 with col1 : 
@@ -434,9 +436,6 @@ def page3():
     </style>""", unsafe_allow_html=True)
             st.title('Table google page')
             st.write(df.sample(30))
-'''def page4():
-    st.markdown("<style> footer {visibility: hidden;} </style>", unsafe_allow_html=True)
-    st.sidebar.header('')'''
 def page5():
     st.markdown("""<style>
         .sidebar .sidebar-content {
